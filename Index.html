@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiệp Valentine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #ff69b4, #4169e1);
+            padding: 20px;
+        }
+
+        .card-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            perspective: 1000px;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .card-front {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .card-back {
+            background: rgba(255, 255, 255, 0.95);
+            transform: rotateY(180deg);
+        }
+
+        .left-side, .right-side {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .left-side {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+        }
+
+        .image-container {
+            width: 80%;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        .right-side {
+            background: linear-gradient(135deg, #4169e1, #1e90ff);
+            color: white;
+            text-align: center;
+        }
+
+        /* Trái tim đập ở giữa */
+        .beating-heart-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            width: 50px;
+            height: 50px;
+            opacity: 0.8;
+        }
+
+        .beating-heart {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            animation: heartBeat 1.2s ease-in-out infinite;
+        }
+
+        .beating-heart::before,
+        .beating-heart::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 40px;
+            background: #14ff3f;
+            border-radius: 25px 25px 0 0;
+        }
+
+        .beating-heart::before {
+            left: 25px;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        .beating-heart::after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+
+        @keyframes heartBeat {
+            0% {
+                transform: scale(0.8);
+            }
+            5% {
+                transform: scale(0.9);
+            }
+            10% {
+                transform: scale(0.8);
+            }
+            15% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(0.8);
+            }
+            100% {
+                transform: scale(0.8);
+            }
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+
+        .flip-button {
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 25px;
+            background: #fff;
+            color: #ff1493;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .flip-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            transform: rotate(45deg);
+            animation: heartFloat 4s ease-in infinite;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+        }
+
+        .heart::before {
+            left: -10px;
+        }
+
+        .heart::after {
+            top: -10px;
+        }
+
+        @keyframes heartFloat {
+            0% {
+                transform: rotate(45deg) translateY(0) scale(0.3);
+                opacity: 1;
+            }
+            100% {
+                transform: rotate(45deg) translateY(-100vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .card-container {
+                height: 700px;
+            }
+
+            .card-front, .card-back {
+                flex-direction: column;
+            }
+
+            .left-side, .right-side {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .image-container {
+                height: 200px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            p {
+                font-size: 1em;
+            }
+
+            .beating-heart-container {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card">
+            <div class="card-front">
+                <div class="left-side">
+                    <div class="image-container">
+                        <img src="Valentine/IMG_9096.jpg" alt="Hình ảnh Valentine">
+                    </div>
+                </div>
+                <div class="right-side">
+                    <h1>Gửi Tiểu thư Hanna của Cá</h1>
+                    <p>Anh muốn viết thiệp tay cho em lắm nhưng mà chữ anh xấu quá nên là anh đành dùng cái cách này để gửi đến em. Em đọc tiếp phần sau anh muốn nói gì tiếp với em nha!!</p>
+                    <button class="flip-button" onclick="flipCard()">❤️ ẤN VÀO ĐÂY ĐI NÈ ❤️</button>
+                </div>
+                <!-- Trái tim đập ở giữa -->
+                <div class="beating-heart-container">
+                    <div class="beating-heart"></div>
+                </div>
+            </div>
+            <div class="card-back">
+                <div class="left-side">
+                    <h1>Chúc Mừng Ngày Valentine</h1>
+                    <p>Cảm ơn em vì đã yêu anh và để anh được yêu em. Mong rằng mình sẽ cùng nhau đi qua nhiều mùa Va lung tung cùng với nhau hơn nữa chứ không có va vào người nào khác nhé!</p>
+                    <p>Anh muốn viết thêm lắm nhưng mà hết chỗ mất rồi. Dù nói nhiều bao nhiêu thì vẫn chỉ tóm gọn là 3 từ </p>
+                    <p>ANH YÊU EM</p>
+                </div>
+                <div class="right-side">
+                    <p>324 dòng code để nói rằng Cá muốn yêu Hanna thêm 32400 ngày nữa </p>
+                    <button class="flip-button" onclick="flipCard()">❤️ HẾT GỒI ❤️</button>
+                </div>
+                <!-- Trái tim đập ở giữa (mặt sau) -->
+                <div class="beating-heart-container">
+                    <div class="beating-heart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function flipCard() {
+            document.querySelector('.card').classList.toggle('flipped');
+        }
+
+        // trái tim bay
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+
+        // Tạo trái tim mỗi 300ms
+        setInterval(createHeart, 300);
+    </script>
+</body>
+</html>
